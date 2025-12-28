@@ -1,28 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 1. Force Webpack (disables strict Turbopack checks for these deps)
-  webpack: (config) => {
-    config.externals.push(
-      'pino-pretty',
-      'lokijs',
-      'encoding',
-      'tap',                 // <--- Found in your error logs
-      'desm',                // <--- Found in your error logs
-      'fastbench',           // <--- Found in your error logs
-      'why-is-node-running', // <--- Found in your error logs
-      'pino-elasticsearch',  // <--- Found in your error logs
-      'bufferutil',
-      'utf-8-validate'
-    );
+  // 1. Ignore Typescript/ESLint errors to ensure build passes
+  typescript: { ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
+
+  // 2. The Webpack Magic
+  webpack: (config, { isServer }) => {
+    // If we are building for the browser (client-side)...
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        // Ghost these node-only modules:
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        // The specific ones crashing your build:
+        tap: false,
+        desm: false,
+        fastbench: false,
+        'why-is-node-running': false,
+        'pino-elasticsearch': false,
+        'pino-pretty': false,
+        lokijs: false,
+        encoding: false,
+        bufferutil: false,
+        'utf-8-validate': false,
+      };
+    }
     return config;
-  },
-  // 2. Ignore Typescript errors during build (optional, but helps speed)
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  // 3. Ignore ESLint errors during build
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 };
 
