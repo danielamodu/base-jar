@@ -160,8 +160,8 @@ export default function Home() {
             onClick={handleMainAction}
             disabled={!isConnected || isPending || !saveAmount}
             className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-[0.98] shadow-lg font-[family-name:var(--font-space)] ${isApproved
-                ? "bg-[#0052FF] hover:bg-blue-600 text-white shadow-blue-500/25"
-                : "bg-white text-black hover:bg-zinc-200"
+              ? "bg-[#0052FF] hover:bg-blue-600 text-white shadow-blue-500/25"
+              : "bg-white text-black hover:bg-zinc-200"
               }`}
           >
             {isPending ? "Processing..." : isApproved ? `Save $${saveAmount} Now` : "Enable BaseJar"}
@@ -180,7 +180,7 @@ export default function Home() {
         </div>
 
         <div className="mt-12 text-center text-zinc-600 text-xs font-mono">
-          <p>Built on Base 🔵 | Vibecoded by 0xYou</p>
+          <p>Built on Base 🔵 | Vibecoded by 47xbt</p>
         </div>
       </div>
     </main>
