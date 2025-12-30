@@ -12,7 +12,7 @@ const connectors = connectorsForWallets(
     ],
     {
         appName: 'BaseJar',
-        projectId: '1586e06e2bb4ca5b2797983ad4a0b008', // 👈 REPLACE THIS!
+        projectId: 'YOUR_PROJECT_ID', // Double check you pasted your real ID here!
     }
 );
 
