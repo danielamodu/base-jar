@@ -32,40 +32,32 @@ function getQueryClient() {
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  // NOTE: Avoid useState when initializing the query client if you don't
-  //       have a suspense boundary between this and the code that may
-  //       suspend because React will throw away the client on the initial
-  //       render if it suspends.
   const queryClient = getQueryClient();
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Prevent SSR issues - WagmiProvider and RainbowKit use browser APIs
-  if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-white">
-        Loading BaseJar...
-      </div>
-    );
-  }
-
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={darkTheme({
-            accentColor: '#0052FF',
-            accentColorForeground: 'white',
-            borderRadius: 'medium',
-          })}
-        >
-          {children}
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <QueryClientProvider client={queryClient}>
+      {mounted ? (
+        <WagmiProvider config={config}>
+          <RainbowKitProvider
+            theme={darkTheme({
+              accentColor: '#0052FF',
+              accentColorForeground: 'white',
+              borderRadius: 'medium',
+            })}
+          >
+            {children}
+          </RainbowKitProvider>
+        </WagmiProvider>
+      ) : (
+        <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-white">
+          Loading BaseJar...
+        </div>
+      )}
+    </QueryClientProvider>
   );
 }
