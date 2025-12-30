@@ -33,31 +33,20 @@ function getQueryClient() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {mounted ? (
-        <WagmiProvider config={config}>
-          <RainbowKitProvider
-            theme={darkTheme({
-              accentColor: '#0052FF',
-              accentColorForeground: 'white',
-              borderRadius: 'medium',
-            })}
-          >
-            {children}
-          </RainbowKitProvider>
-        </WagmiProvider>
-      ) : (
-        <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-white">
-          Loading BaseJar...
-        </div>
-      )}
-    </QueryClientProvider>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider
+          theme={darkTheme({
+            accentColor: '#0052FF',
+            accentColorForeground: 'white',
+            borderRadius: 'medium',
+          })}
+        >
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
