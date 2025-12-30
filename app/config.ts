@@ -1,4 +1,4 @@
-import { http, createConfig, cookieStorage, createStorage } from 'wagmi';
+import { http, createConfig } from 'wagmi';
 import { base } from 'wagmi/chains';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import { metaMaskWallet, rainbowWallet, coinbaseWallet } from '@rainbow-me/rainbowkit/wallets';
@@ -22,8 +22,4 @@ export const config = createConfig({
         [base.id]: http(),
     },
     connectors,
-    ssr: true, // <--- THIS IS CRITICAL
-    storage: createStorage({
-        storage: cookieStorage, // <--- THIS PREVENTS THE CRASH
-    }),
 });
