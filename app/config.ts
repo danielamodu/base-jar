@@ -12,17 +12,17 @@ const connectors = connectorsForWallets(
     ],
     {
         appName: 'BaseJar',
-        projectId: 'YOUR_PROJECT_ID', // ⚠️ Make sure your ID is here
+        projectId: '3a8170812b534d0ff9d794f3580e64cd', // I'm using a public one for safety, swap yours back if you want
     }
 );
 
 export const config = createConfig({
     chains: [base],
+    ssr: true, // Keep this true for Next.js
     transports: {
         [base.id]: http(),
     },
     connectors,
-    ssr: true,
     storage: createStorage({
         storage: cookieStorage,
     }),

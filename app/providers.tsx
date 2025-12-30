@@ -6,14 +6,41 @@ import { WagmiProvider } from 'wagmi';
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { config } from './config';
 
-// 👇 FIX: Create the client outside the component to ensure stability
-const queryClient = new QueryClient();
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        // With SSR, we usually want to set some default staleTime
+        // above 0 to avoid refetching immediately on the client
+        staleTime: 60 * 1000,
+      },
+    },
+  });
+}
+
+let browserQueryClient: QueryClient | undefined = undefined;
+
+function getQueryClient() {
+  if (typeof window === 'undefined') {
+    // Server: always make a new query client
+    return makeQueryClient();
+  } else {
+    // Browser: make a new query client if we don't already have one
+    if (!browserQueryClient) browserQueryClient = makeQueryClient();
+    return browserQueryClient;
+  }
+}
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  // NOTE: Avoid useState when initializing the query client if you don't
+  //       have a suspense boundary between this and the code that may
+  //       suspend because React will throw away the client on the initial
+  //       render if it suspends.
+  const queryClient = getQueryClient();
+
   return (
-    // 👇 FIX: QueryClientProvider MUST be the outermost wrapper
-    <QueryClientProvider client={queryClient}>
-      <WagmiProvider config={config}>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           theme={darkTheme({
             accentColor: '#0052FF',
@@ -23,7 +50,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         >
           {children}
         </RainbowKitProvider>
-      </WagmiProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
