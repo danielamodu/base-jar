@@ -6,26 +6,20 @@ const nextConfig = {
   // Note: 'eslint' config is removed as it is not supported here in Next.js 16
 
   // 2. The Webpack Magic (Crucial for WalletConnect)
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-        crypto: false,
-        tap: false,
-        desm: false,
-        fastbench: false,
-        'why-is-node-running': false,
-        'pino-elasticsearch': false,
-        'pino-pretty': false,
-        lokijs: false,
-        encoding: false,
-        bufferutil: false,
-        'utf-8-validate': false,
-      };
-    }
+  webpack: (config) => {
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+      crypto: false,
+      'pino-pretty': false, // Keep this for client fallbacks
+    };
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@react-native-async-storage/async-storage': false,
+    };
     return config;
   },
 };
