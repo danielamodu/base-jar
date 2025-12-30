@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import { Providers } from "./providers";
+// import { Providers } from "./providers"; // Removed in favor of dynamic import below
 import ClientLayout from "./client-layout";
 
 export const metadata: Metadata = {
@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     "base:app_id": "69541200c63ad876c90819d1",
   },
 };
+
+import dynamic from "next/dynamic";
+
+const Providers = dynamic(
+  () => import("./providers").then((mod) => mod.Providers),
+  { ssr: false }
+);
 
 export default function RootLayout({
   children,
