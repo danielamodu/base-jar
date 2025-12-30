@@ -18,7 +18,7 @@ const connectors = typeof window !== 'undefined' ? connectorsForWallets(
 
 export const config = createConfig({
     chains: [base],
-    ssr: true, // Keep this true for Next.js
+    ssr: false, // Disable SSR to avoid 'No QueryClient set' build errors
     transports: {
         [base.id]: http(),
     },
