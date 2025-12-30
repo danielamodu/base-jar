@@ -13,12 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-import dynamic from "next/dynamic";
-
-const Providers = dynamic(
-  () => import("./providers").then((mod) => mod.Providers),
-  { ssr: false }
-);
+import ProvidersWrapper from "./providers-wrapper";
 
 export default function RootLayout({
   children,
@@ -29,11 +24,11 @@ export default function RootLayout({
     <html lang="en" className="dark">
       {/* 👇 Simplified body tag (Removed missing font variables) */}
       <body className="antialiased bg-zinc-950 text-white">
-        <Providers>
+        <ProvidersWrapper>
           <ClientLayout>
             {children}
           </ClientLayout>
-        </Providers>
+        </ProvidersWrapper>
       </body>
     </html>
   );
