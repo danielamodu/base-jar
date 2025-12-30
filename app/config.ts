@@ -3,7 +3,7 @@ import { base } from 'wagmi/chains';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import { metaMaskWallet, rainbowWallet, coinbaseWallet } from '@rainbow-me/rainbowkit/wallets';
 
-const connectors = connectorsForWallets(
+const connectors = typeof window !== 'undefined' ? connectorsForWallets(
     [
         {
             groupName: 'Recommended',
@@ -14,7 +14,7 @@ const connectors = connectorsForWallets(
         appName: 'BaseJar',
         projectId: '3a8170812b534d0ff9d794f3580e64cd', // I'm using a public one for safety, swap yours back if you want
     }
-);
+) : [];
 
 export const config = createConfig({
     chains: [base],
