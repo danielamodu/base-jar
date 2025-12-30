@@ -22,11 +22,11 @@ export default function RootLayout({
     <html lang="en" className="dark">
       {/* 👇 Simplified body tag (Removed missing font variables) */}
       <body className="antialiased bg-zinc-950 text-white">
-        <ClientLayout>
-          <Providers>
+        <Providers>
+          <ClientLayout>
             {children}
-          </Providers>
-        </ClientLayout>
+          </ClientLayout>
+        </Providers>
       </body>
     </html>
   );
