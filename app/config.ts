@@ -12,7 +12,7 @@ const connectors = connectorsForWallets(
     ],
     {
         appName: 'BaseJar',
-        projectId: 'YOUR_PROJECT_ID', // Get one at https://cloud.walletconnect.com (optional for now)
+        projectId: 'YOUR_PROJECT_ID',
     }
 );
 
@@ -22,9 +22,8 @@ export const config = createConfig({
         [base.id]: http(),
     },
     connectors,
-    // 👇 THIS IS THE FIX: Use cookieStorage instead of local/indexedDB
+    ssr: true, // <--- CRITICAL: This tells wagmi to behave on the server
     storage: createStorage({
-        storage: cookieStorage,
+        storage: cookieStorage, // <--- CRITICAL: This replaces the crashing database
     }),
-    ssr: true, // Tells wagmi we are running on server
 })
